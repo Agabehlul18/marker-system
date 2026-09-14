@@ -3,7 +3,7 @@ package com.example.markersystem;
 import com.example.markersystem.entity.StudentSubmission;
 import com.example.markersystem.entity.WrittenQuestion;
 import com.example.markersystem.repository.StudentSubmissionRepository;
-import com.example.markersystem.service.BatchExamProcessingService;
+//import com.example.markersystem.service.BatchExamProcessingService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,13 +19,13 @@ public class MarkerSystemApplication {
     }
 
     @Bean
-    CommandLineRunner runner(BatchExamProcessingService batchService,
+    CommandLineRunner runner(
                              StudentSubmissionRepository submissionRepository) {
         return args -> {
             try {
                 System.out.println("\n================ 1. BATCH EMAL BAŞLADI ================");
                 // Batch prosesi yenidən aktiv edildi ("abc" qovluğundakı şəkilləri oxuyur)
-                batchService.processAllScansFromDirectory("abc");
+//                batchService.processAllScansFromDirectory("abc");
                 System.out.println(">>> Bütün varaqlar uğurla emal edildi və bazaya yazıldı!");
 
                 System.out.println("\n================ 2. BAZADAKI İMTAHAN NƏTİCƏLƏRİ ================");
