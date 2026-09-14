@@ -5,7 +5,7 @@ import com.example.markersystem.entity.StudentSubmission;
 import com.example.markersystem.service.MarkerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/marker")
 public class MarkerController {
