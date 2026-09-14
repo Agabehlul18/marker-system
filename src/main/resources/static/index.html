@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Riyaziyyat Sınaq №1 nəticələri</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --brand: #1c7a4f;
+            --brand-dark: #145c3b;
+            --ink: #16211c;
+            --muted: #8a8f8a;
+            --bg: #f4f6f5;
+            --panel: #ffffff;
+            --line: #e7e9e7;
+            --field-bg: #f2f3f2;
+            --good: #1c7a4f;
+            --good-bg: #e8f5ee;
+            --pending: #b06a12;
+            --pending-bg: #fbf1e2;
+            --danger: #b6392a;
+            --danger-bg: #fbeae7;
+            --radius-lg: 18px;
+            --radius-md: 10px;
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Inter', system-ui, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: inherit; }
+
+        nav.topbar {
+            background: var(--panel);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .topbar-inner {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 18px 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-mark {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid var(--brand);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--brand);
+        }
+
+        .brand-name {
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: 0.2px;
+        }
+
+        main {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 40px 24px 90px;
+        }
+
+        .breadcrumb {
+            font-size: 14px;
+            color: var(--muted);
+            margin: 0 0 18px;
+        }
+
+        h1.page-title {
+            font-size: 34px;
+            font-weight: 800;
+            margin: 0 0 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            line-height: 1.2;
+        }
+
+        h1.page-title .emoji { font-size: 30px; }
+
+        p.page-subtitle {
+            font-size: 16px;
+            color: #4b514c;
+            margin: 0 0 36px;
+        }
+
+        .lookup-card {
+            background: var(--panel);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 12px 30px rgba(20, 40, 30, 0.06);
+            padding: 32px;
+            max-width: 480px;
+            margin: 0 auto 56px;
+        }
+
+        label.field-label {
+            display: block;
+            font-size: 14.5px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        input#isNomresi {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-md);
+            background: var(--field-bg);
+            color: var(--ink);
+            margin-bottom: 16px;
+        }
+
+        input#isNomresi:focus {
+            outline: none;
+            border-color: var(--brand);
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(28, 122, 79, 0.12);
+        }
+
+        input#isNomresi::placeholder { color: #9a9e9a; }
+
+        button#lookupBtn {
+            width: 100%;
+            background: var(--brand);
+            color: #ffffff;
+            border: none;
+            padding: 15px;
+            font-size: 15.5px;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+
+        button#lookupBtn:hover { background: var(--brand-dark); }
+        button#lookupBtn:focus-visible { outline: 2px solid var(--brand-dark); outline-offset: 2px; }
+        button#lookupBtn[disabled] { background: #9bb9ab; cursor: default; }
+
+        .helper-link {
+            display: block;
+            text-align: center;
+            margin-top: 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--brand);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+        }
+        .helper-link:hover { color: var(--brand-dark); }
+
+        .message {
+            margin-top: 16px;
+            padding: 12px 14px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+        }
+        .message.error { background: var(--danger-bg); color: var(--danger); }
+        .message.loading { background: var(--field-bg); color: var(--muted); }
+        .message.info { background: var(--good-bg); color: var(--good); }
+
+        /* ---- Result document ---- */
+        #resultArea { max-width: 780px; margin: 0 auto; }
+
+        .result-doc {
+            background: var(--panel);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 12px 30px rgba(20, 40, 30, 0.06);
+            overflow: hidden;
+        }
+
+        .result-head {
+            padding: 26px 30px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .result-head .name {
+            font-size: 22px;
+            font-weight: 800;
+            margin: 0 0 4px;
+        }
+
+        .result-head .meta {
+            font-size: 14px;
+            color: var(--muted);
+            margin: 0;
+        }
+
+        .stat-strip {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .stat { padding: 20px 24px; border-right: 1px solid var(--line); }
+        .stat:last-child { border-right: none; }
+
+        .stat .label { font-size: 12.5px; color: var(--muted); margin: 0 0 6px; }
+        .stat .value { font-size: 26px; font-weight: 800; margin: 0; }
+        .stat.final .value { color: var(--good); }
+
+        .questions-section { padding: 26px 30px 30px; }
+
+        .questions-section h3 {
+            font-size: 17px;
+            font-weight: 800;
+            margin: 0 0 16px;
+        }
+
+        .question-box {
+            border: 1px solid var(--line);
+            border-radius: var(--radius-md);
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            background: var(--field-bg);
+        }
+        .question-box:last-child { margin-bottom: 0; }
+
+        .q-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .q-top .q-name { font-weight: 700; font-size: 14.5px; }
+
+        .badge {
+            font-size: 13px;
+            font-weight: 700;
+            padding: 3px 12px;
+            border-radius: 20px;
+        }
+        .badge.scored { background: var(--good-bg); color: var(--good); }
+        .badge.pending { background: var(--pending-bg); color: var(--pending); }
+
+        .question-box img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+        }
+
+        .no-image { font-size: 13.5px; color: var(--muted); font-style: italic; margin: 0; }
+        .empty-note { font-size: 14px; color: var(--muted); }
+
+        /* ---- Answer key ---- */
+        .answer-key-section {
+            padding: 26px 30px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .answer-key-section h3 {
+            font-size: 17px;
+            font-weight: 800;
+            margin: 0 0 4px;
+        }
+
+        .answer-key-section .variant-note {
+            font-size: 13.5px;
+            color: var(--muted);
+            margin: 0 0 16px;
+        }
+
+        .answer-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .answer-item {
+            background: var(--field-bg);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-md);
+            padding: 8px 4px;
+            text-align: center;
+        }
+
+        .answer-item .q-num {
+            display: block;
+            font-size: 11.5px;
+            color: var(--muted);
+            margin-bottom: 2px;
+        }
+
+        .answer-item .q-ans {
+            display: block;
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--good);
+        }
+
+        .answer-key-missing {
+            font-size: 14px;
+            color: var(--pending);
+            background: var(--pending-bg);
+            padding: 12px 14px;
+            border-radius: var(--radius-md);
+        }
+
+        @media (max-width: 640px) {
+            .answer-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        /* ---- Leaderboard ---- */
+        .leaderboard-section { margin-top: 56px; }
+
+        .leaderboard-head {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+        .leaderboard-head h2 {
+            font-size: 20px;
+            font-weight: 800;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .leaderboard-head .sub {
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .leaderboard-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .leader-row {
+            background: var(--panel);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 8px 20px rgba(20, 40, 30, 0.05);
+            padding: 16px 22px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .leader-rank-ring {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 2px solid var(--brand);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            flex: none;
+        }
+
+        .leader-info { flex: 1; min-width: 0; }
+
+        .leader-info .rank-label {
+            font-size: 13px;
+            color: var(--muted);
+            margin: 0 0 2px;
+        }
+
+        .leader-info .leader-name {
+            font-size: 15.5px;
+            font-weight: 700;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .leader-score {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--good);
+            flex: none;
+        }
+
+        .leaderboard-note {
+            font-size: 13.5px;
+            color: var(--muted);
+            padding: 16px 22px;
+            background: var(--panel);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 8px 20px rgba(20, 40, 30, 0.05);
+        }
+
+        @media (max-width: 640px) {
+            .topbar-inner { padding: 16px 18px; }
+            main { padding: 30px 16px 70px; }
+            h1.page-title { font-size: 26px; }
+            h1.page-title .emoji { font-size: 24px; }
+            p.page-subtitle { font-size: 14.5px; margin-bottom: 28px; }
+            .lookup-card { padding: 22px; }
+            .stat-strip { grid-template-columns: 1fr; }
+            .stat { border-right: none; border-bottom: 1px solid var(--line); }
+            .stat:last-child { border-bottom: none; }
+            .result-head, .questions-section { padding: 20px; }
+            .leader-row { padding: 14px 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="topbar">
+    <div class="topbar-inner">
+        <div class="logo-mark">İS</div>
+        <div class="brand-name">İNS</div>
+    </div>
+</nav>
+
+<main>
+    <p class="breadcrumb">Nəticələr / Riyaziyyat Sınaq №1</p>
+    <h1 class="page-title"><span class="emoji">🎓</span> Riyaziyyat Sınaq №1 nəticələri</h1>
+    <p class="page-subtitle">10–11-ci sinif · İş nömrənizi daxil edin və nəticənizi bir neçə saniyəyə görün</p>
+
+    <section class="lookup-card">
+        <label class="field-label" for="isNomresi">İş nömrəsi</label>
+        <input type="text" id="isNomresi" placeholder="Məsələn: 10245" inputmode="numeric" autocomplete="off">
+        <button id="lookupBtn" onclick="getResult()">Nəticəni göstər</button>
+        <button type="button" class="helper-link" onclick="showHelp()">İş nömrəsini unutmusan?</button>
+        <div id="messageArea"></div>
+    </section>
+
+    <div id="resultArea"></div>
+
+    <section class="leaderboard-section">
+        <div class="leaderboard-head">
+            <h2>🏆 Liderlik tablosu</h2>
+            <span class="sub">Ən yüksək nəticə göstərən şagirdlər</span>
+        </div>
+        <div id="leaderboardArea">
+            <div class="leaderboard-note">Liderlik tablosu yüklənir…</div>
+        </div>
+    </section>
+</main>
+
+<script>
+    const input = document.getElementById('isNomresi');
+    const btn = document.getElementById('lookupBtn');
+    const messageArea = document.getElementById('messageArea');
+    const resultArea = document.getElementById('resultArea');
+    const leaderboardArea = document.getElementById('leaderboardArea');
+
+    // Bağlı (qapalı) sualların düzgün cavab açarı, hər variant üçün ayrı.
+    const ANSWER_KEYS = {
+        A: ['B','D','B','A','A','E','D','D','A','D','C','B','A','B','E','24','11','2','3','4','24'],
+        B: ['D','D','B','B','D','E','A','D','A','C','D','B','A','B','C','28','11','3','12','1','24']
+    };
+
+    function getAnswerKey(variant) {
+        const v = String(variant ?? '').trim().toUpperCase();
+        if (ANSWER_KEYS[v]) return { variant: v, answers: ANSWER_KEYS[v] };
+        return null;
+    }
+
+    const rankMeta = [
+        { label: 'Birinci yer', icon: '🥇' },
+        { label: 'İkinci yer', icon: '🥈' },
+        { label: 'Üçüncü yer', icon: '🥉' }
+    ];
+
+    input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') getResult();
+    });
+
+    function setMessage(html) { messageArea.innerHTML = html; }
+
+    function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str ?? '';
+        return div.innerHTML;
+    }
+
+    function showHelp() {
+        setMessage('<div class="message info">İş nömrənizi imtahan iştirakçı vərəqinizin üzərində və ya sinif rəhbərinizdə tapa bilərsiniz.</div>');
+    }
+
+    async function getResult() {
+        const isNomresi = input.value.trim();
+        resultArea.innerHTML = '';
+
+        if (!isNomresi) {
+            setMessage('<div class="message error">Zəhmət olmasa iş nömrəsini yazın.</div>');
+            input.focus();
+            return;
+        }
+
+        setMessage('<div class="message loading">Nəticə axtarılır…</div>');
+        btn.disabled = true;
+
+        try {
+            const response = await fetch(`/api/student/result/${encodeURIComponent(isNomresi)}`);
+
+            if (!response.ok) {
+                setMessage('<div class="message error">Bu nömrəyə uyğun nəticə tapılmadı.</div>');
+                return;
+            }
+
+            const data = await response.json();
+            setMessage('');
+            renderResult(data);
+        } catch (e) {
+            console.error(e);
+            setMessage('<div class="message error">Xəta baş verdi. Bir az sonra yenidən cəhd edin.</div>');
+        } finally {
+            btn.disabled = false;
+        }
+    }
+
+    function renderResult(data) {
+        const adSoyad = escapeHtml(data.adSoyad || 'N/A');
+        const sinif = escapeHtml(data.sinif || '');
+        const otaq = escapeHtml(data.otaq || '');
+        const variant = escapeHtml(data.variant ?? '');
+        const closedCorrectCount = escapeHtml(data.closedCorrectCount ?? '');
+        const writtenTotalScore = escapeHtml(data.writtenTotalScore ?? 0);
+        const finalScore = escapeHtml(data.finalScore ?? 0);
+
+        const key = getAnswerKey(data.variant);
+        let answerKeyHtml = '';
+
+        if (key) {
+            const items = key.answers.map((ans, i) => `
+        <div class="answer-item">
+          <span class="q-num">${i + 1}</span>
+          <span class="q-ans">${escapeHtml(ans)}</span>
+        </div>
+      `).join('');
+
+            answerKeyHtml = `
+        <div class="answer-key-section">
+          <h3>Düzgün cavablar</h3>
+          <p class="variant-note">Variant ${escapeHtml(key.variant)} üçün qapalı sualların (1–21) cavab açarı</p>
+          <div class="answer-grid">${items}</div>
+        </div>
+      `;
+        } else if (data.variant) {
+            answerKeyHtml = `
+        <div class="answer-key-section">
+          <h3>Düzgün cavablar</h3>
+          <p class="answer-key-missing">"${escapeHtml(data.variant)}" variantı üçün cavab açarı tapılmadı.</p>
+        </div>
+      `;
+        }
+
+        let questionsHtml = '';
+
+        if (data.writtenQuestions && data.writtenQuestions.length > 0) {
+            questionsHtml = data.writtenQuestions.map(wq => {
+                const imgSrc = wq.imagePath ? `/${String(wq.imagePath).replace(/\\/g, '/')}` : '';
+                const hasScore = wq.score !== null && wq.score !== undefined;
+                const badge = hasScore
+                    ? `<span class="badge scored">Bal: ${escapeHtml(wq.score)}</span>`
+                    : `<span class="badge pending">Hələ yoxlanılmayıb</span>`;
+                const image = imgSrc
+                    ? `<img src="${imgSrc}" alt="Sual ${escapeHtml(wq.questionNumber)} şəkli">`
+                    : `<p class="no-image">Şəkil yoxdur.</p>`;
+
+                return `
+          <div class="question-box">
+            <div class="q-top">
+              <span class="q-name">Sual ${escapeHtml(wq.questionNumber)}</span>
+              ${badge}
+            </div>
+            ${image}
+          </div>
+        `;
+            }).join('');
+        } else {
+            questionsHtml = '<p class="empty-note">Yazılı sual qeydi tapılmadı.</p>';
+        }
+
+        resultArea.innerHTML = `
+      <div class="result-doc">
+        <div class="result-head">
+          <p class="name">${adSoyad}</p>
+          <p class="meta">Sinif / Otaq: ${sinif}${sinif && otaq ? ' / ' : ''}${otaq} &nbsp;•&nbsp; Variant: ${variant}</p>
+        </div>
+        <div class="stat-strip">
+          <div class="stat">
+            <p class="label">Qapalı düz sayı (1–21)</p>
+            <p class="value">${closedCorrectCount}</p>
+          </div>
+          <div class="stat">
+            <p class="label">Yazılı suallar cəm balı</p>
+            <p class="value">${writtenTotalScore}</p>
+          </div>
+          <div class="stat final">
+            <p class="label">Yekun bal</p>
+            <p class="value">${finalScore}</p>
+          </div>
+        </div>
+        ${answerKeyHtml}
+        <div class="questions-section">
+          <h3>Yazılı suallar və cavablarınız</h3>
+          ${questionsHtml}
+        </div>
+      </div>
+    `;
+    }
+
+    // Leaderboard is best-effort: if the backend does not expose /api/leaderboard yet,
+    // the section quietly disappears instead of showing an error or fabricated names.
+    async function loadLeaderboard() {
+        try {
+            const response = await fetch('/api/leaderboard');
+            if (!response.ok) throw new Error('no leaderboard endpoint');
+
+            const list = await response.json();
+            if (!Array.isArray(list) || list.length === 0) {
+                leaderboardArea.parentElement.style.display = 'none';
+                return;
+            }
+
+            leaderboardArea.innerHTML = list.slice(0, 3).map((row, i) => `
+        <div class="leader-row">
+          <div class="leader-rank-ring">${rankMeta[i] ? rankMeta[i].icon : (i + 1)}</div>
+          <div class="leader-info">
+            <p class="rank-label">${rankMeta[i] ? rankMeta[i].label : `${i + 1}-ci yer`}</p>
+            <p class="leader-name">${escapeHtml(row.adSoyad || 'N/A')}</p>
+          </div>
+          <div class="leader-score">${escapeHtml(row.finalScore ?? '')}</div>
+        </div>
+      `).join('');
+            leaderboardArea.className = 'leaderboard-list';
+        } catch (e) {
+            leaderboardArea.parentElement.style.display = 'none';
+        }
+    }
+
+    loadLeaderboard();
+</script>
+
+</body>
+</html>
