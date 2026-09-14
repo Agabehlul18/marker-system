@@ -11,25 +11,33 @@ COPY build.gradle .
 COPY settings.gradle .
 RUN chmod +x gradlew
 
-# 4. Dependenciesləri yükləyirik (cache üçün ayrıca layer)
+# 4. Vacib qovluqları (abc, crops, data) konteynerə əlavə edirik
+COPY abc abc
+COPY crops crops
+COPY data data
+
+# 5. Dependenciesləri yükləyirik (cache üçün ayrıca layer)
 RUN ./gradlew dependencies || true
 
-# 5. Mənbə kodunu əlavə edirik
+# 6. Mənbə kodunu əlavə edirik
 COPY src src
 
-# 6. Spring Boot jar yaratmaq
+# 7. Spring Boot jar yaratmaq
 RUN ./gradlew bootJar --no-daemon
 
-# 7. Run image (lightweight)
+# 8. Run image (lightweight)
 FROM eclipse-temurin:21-jdk-alpine
 
 WORKDIR /app
 
-# 8. Jar faylıni build image-dan copy edirik
+# 9. Jar faylını və lazım olan qovluqları build image-dan copy edirik
 COPY --from=build /app/build/libs/*.jar app.jar
+COPY --from=build /app/abc abc
+COPY --from=build /app/crops crops
+COPY --from=build /app/data data
 
-# 9. Portu təyin edirik
+# 10. Portu təyin edirik
 EXPOSE 8080
 
-# 10. Start command
+# 11. Start command
 ENTRYPOINT ["java","-jar","app.jar"]
